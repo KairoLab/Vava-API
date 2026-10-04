@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "password_reset_tokens")
@@ -21,11 +22,13 @@ public class PasswordResetToken {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // SHA-256 do token enviado ao usuario (o valor original nunca e salvo)
     @Column(nullable = false, unique = true)
     private String token;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     @Column(nullable = false)

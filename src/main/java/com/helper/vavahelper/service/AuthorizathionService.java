@@ -1,6 +1,5 @@
 package com.helper.vavahelper.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,14 +9,21 @@ import com.helper.vavahelper.repositories.UserRepository;
 
 @Service
 public class AuthorizathionService implements UserDetailsService {
-    
-    @Autowired
-    UserRepository repository;
+
+    private final UserRepository repository;
+
+    public AuthorizathionService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //Pesquisa para ver se o User já existe:
-        return repository.findByLogin(username);
+        UserDetails user = repository.findByLogin(username);
+        // O contrato do UserDetailsService proibe retornar null. Lancar a excecao faz o Spring
+        // responder 401 (credenciais invalidas) em vez de um erro 500.
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
     }
-    
 }
