@@ -1,46 +1,28 @@
-<h1 align="center">🎯 Vava-API</h1>
+# Vava-API
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 17" />
-  <img src="https://img.shields.io/badge/Spring_Boot-3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot 3" />
-  <img src="https://img.shields.io/badge/Spring_Security-JWT-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white" alt="Spring Security" />
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white" alt="Maven" />
-  <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="Swagger" />
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT" />
-</p>
+![Java](https://img.shields.io/badge/Java-17-orange) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4-green) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue) ![JWT](https://img.shields.io/badge/JWT-black) ![Maven](https://img.shields.io/badge/Maven-C71A36) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D) ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-API REST em **Spring Boot** com dados de agentes, skills e lineups do Valorant, mais autenticação de usuários com JWT. Ela é consumida por um frontend separado.
+API REST em **Spring Boot** com dados de agentes, skills e lineups do Valorant, mais autenticação de usuários com **JWT**. Ela é consumida por um frontend separado.
 
 O catálogo (agentes, skills e lineups) é público e somente leitura. Cadastro, login e recuperação de senha são feitos por rotas de autenticação.
 
-## 🛠️ Tecnologias
+## Tecnologias
 
-<p>
-  <img src="https://skillicons.dev/icons?i=java,spring,postgres,maven,git,github" alt="Tecnologias" />
-</p>
+- Java 17, Spring Boot 3 (Web, Data JPA, Security, Validation, Mail, Actuator)
+- PostgreSQL em produção e H2 em memória no desenvolvimento local e nos testes
+- Autenticação stateless com **JWT** (java-jwt) e senhas com BCrypt
+- Cache em memória com **Caffeine**
+- Documentação **OpenAPI/Swagger** (desligada por padrão)
+- Maven
 
-| Ícone | Tecnologia | Uso |
-|:-----:|------------|-----|
-| ☕ | **Java 17** | Linguagem |
-| 🌱 | **Spring Boot 3** | Web, Data JPA, Validation, Mail e Actuator |
-| 🔐 | **Spring Security** | Autenticação e autorização |
-| 🔑 | **JWT (java-jwt)** | Tokens de acesso |
-| 🐘 | **PostgreSQL** | Banco de produção e homologação |
-| 🧪 | **H2** | Banco em memória para desenvolvimento local e testes |
-| ⚡ | **Caffeine** | Cache em memória |
-| 📖 | **springdoc OpenAPI** | Swagger UI (desligado por padrão) |
-| 🏗️ | **Maven** | Build e dependências |
-| 🚂 | **Railway** | Hospedagem |
+## Recursos de performance e segurança
 
-## ✨ Recursos de performance e segurança
-
-**⚡ Performance**
+**Performance**
 - Cache em memória (Caffeine) do catálogo inteiro: agentes, skills e lineups ficam 1 hora em cache. Os filtros por nome de agente ou mapa são feitos em memória, então a entrada do usuário nunca gera consulta ao banco.
 - Cache HTTP nas rotas públicas: `Cache-Control: public, max-age=300` e `ETag`. Quando nada mudou, a API responde `304 Not Modified` sem corpo.
 - Compressão das respostas JSON.
 
-**🚦 Rate limit por IP** (token bucket em memória)
+**Rate limit por IP** (token bucket em memória)
 
 | Rota | Limite padrão |
 |------|---------------|
@@ -51,7 +33,7 @@ O catálogo (agentes, skills e lineups) é público e somente leitura. Cadastro,
 
 Ao passar do limite a API responde `429 Too Many Requests` com o header `Retry-After`. Os limites podem ser alterados por variável de ambiente.
 
-**🛡️ Segurança**
+**Segurança**
 - `JWT_SECRET` obrigatório, com no mínimo 32 caracteres. Sem ele a aplicação não sobe.
 - Senhas com BCrypt e política mínima: 8 caracteres, maiúscula, minúscula, número e caractere especial.
 - Token de recuperação de senha guardado como hash SHA-256 e com expiração. A rota de "esqueci a senha" sempre responde 200, para não revelar quais e-mails existem.
@@ -61,13 +43,13 @@ Ao passar do limite a API responde `429 Too Many Requests` com o header `Retry-A
 - Admin inicial criado apenas se `ADMIN_PASSWORD` estiver definida. Não existe mais senha padrão.
 - Validação de tamanho em todos os campos de entrada.
 
-## 📋 Requisitos
+## Requisitos
 
 - Java 17 ou superior
 - Maven (ou o wrapper `./mvnw`)
 - PostgreSQL para rodar com a configuração padrão
 
-## 🔧 Variáveis de ambiente
+## Variáveis de ambiente
 
 | Variável | Obrigatória | Descrição |
 |----------|:-----------:|-----------|
@@ -91,7 +73,7 @@ Ao passar do limite a API responde `429 Too Many Requests` com o header `Retry-A
 
 Nunca coloque senhas ou chaves no repositório. Use sempre variáveis de ambiente.
 
-## ▶️ Como rodar
+## Como rodar
 
 ```sh
 git clone https://github.com/KairoLab/Vava-API.git
@@ -122,9 +104,9 @@ mvn test
 
 Os testes usam H2 e cobrem política de senha, JWT, rate limit e segurança das rotas.
 
-## 📡 Endpoints
+## Endpoints
 
-### 🎮 Catálogo (público, somente leitura)
+### Catálogo (público, somente leitura)
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
@@ -136,7 +118,7 @@ Os testes usam H2 e cobrem política de senha, JWT, rate limit e segurança das 
 | GET | `/media/maps/{mapName}` | Lineups de um mapa |
 | GET | `/actuator/health` | Health check |
 
-### 🔑 Autenticação
+### Autenticação
 
 | Método | Rota | Corpo |
 |--------|------|-------|
@@ -153,7 +135,7 @@ Resposta do login:
 
 Para rotas protegidas, envie o header `Authorization: Bearer <token>`.
 
-### 📟 Códigos de resposta comuns
+### Códigos de resposta comuns
 
 | Código | Significado |
 |--------|-------------|
@@ -162,7 +144,7 @@ Para rotas protegidas, envie o header `Authorization: Bearer <token>`.
 | 404 | Agente não encontrado |
 | 429 | Limite de requisições atingido (veja `Retry-After`) |
 
-## 🗂️ Modelo de dados
+## Modelo de dados
 
 <details>
 <summary>Diagrama Entidade-Relacionamento</summary>
@@ -214,19 +196,19 @@ erDiagram
 
 Agentes têm várias skills e várias lineups. Mapas também têm várias lineups. Usuários são independentes e têm um papel (`ADMIN` ou `USER`).
 
-## 🚀 Deploy
+## Deploy
 
 1. Configure as variáveis de ambiente da plataforma (veja a tabela acima).
 2. Defina `CORS_ALLOWED_ORIGINS` com o domínio do frontend.
 3. Atrás de proxy, como Railway, mantenha `FORWARD_HEADERS_STRATEGY=native` para o rate limit enxergar o IP real do cliente.
 4. Use o endpoint `/actuator/health` como health check.
 
-## 🔮 Futuras implementações
+## Futuras implementações
 
 - Integração com OAuth2
 - Migrações de banco com Flyway
 - Atendimento e suporte ao usuário
 
-## 📜 Licença
+## Licença
 
 Este projeto está sob a licença MIT. Sinta-se à vontade para utilizá-lo e modificá-lo.
